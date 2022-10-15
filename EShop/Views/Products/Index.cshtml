@@ -1,0 +1,108 @@
+﻿@model ProductViewModel
+
+
+    <div class="container mt-5 mb-3">
+    <div class="row">
+       @if (Model.Products.Count() >0)
+        {
+            @foreach (var product in Model.Products)
+            {
+                <div class="col-md-4">
+                        <div class="card p-3 mb-2">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-row align-items-center">
+                                    <div class="icon"> <i class="bx bxl-mailchimp"></i> </div>
+                                    <div class="ms-2 c-details">
+                                        <h6 class="mb-0">@product.Name</h6>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="mt-5">
+                                <h3 class="heading">@product.Name<br>@product.Description</h3>
+                                <div class="row">
+                                    <div class="mt-3">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <strong class="price">
+                                                    @product.Price.ToString("##")
+                                                    <span class="text2">LE</span>
+                                                </strong>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class='quantity'>
+                                                    <input type='button' value='-' class='qtyminus minus' field='quantity' />
+                                                    <input asp-for="@product.Quantity" type='text'  class='qty' />
+                                                    <input type='button' value='+' class='qtyplus plus' field='quantity' />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                    <button class="btn btn-primary submit" data-url="@Url.Action("PlaceOrder","Order")" data-id="@product.Id" id="submit">buy now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                
+            }
+            <div class="row" style="width:40%;margin-left:30%">
+                <table cellpadding="0" cellspacing="0" >
+                    <tr>
+                        @for (int i = 1; i <= Model.productCount; i++)
+                        {
+                            <td>
+                                @if (i != Model.CurrentPage)
+                                {
+                                    <a asp-action="Index" asp-controller="Products" asp-route-page="@i">@i</a>
+                                }
+                                else
+                                {
+                                    <span>@i</span>
+                                }
+                            </td>
+                        }
+                    </tr>
+                </table>
+            </div>
+          
+          
+        }else
+        {
+            <p>No product to view</p>
+        }
+        </div>
+    </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+        $(document).ready(($) => {
+            $('.quantity').on('click', '.plus', function (e) {
+                let $input = $(this).prev('input.qty');
+                let val = parseInt($input.val());
+                $input.val(val + 1).change();
+            });
+
+            $('.quantity').on('click', '.minus',
+                function (e) {
+                    let $input = $(this).next('input.qty');
+                    var val = parseInt($input.val());
+                    if (val > 1) {
+                        $input.val(val - 1).change();
+                    }
+                });
+
+        $(".submit").on("click", function (element) {
+            var urll = $(this).attr("data-url");
+            var url = urll + "/?id="+ $(this).attr("data-id");
+            var qty = $(this).parent().parent().find(".qty").val();
+            var link = url + "&qty=" + qty;
+          //  console.log(link)
+
+            
+            
+         
+           window.location = link
+            })
+        });
+</script>

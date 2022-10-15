@@ -1,0 +1,31 @@
+﻿@model Product
+<div class="container">
+    <form method="post" asp-action="Edit">
+        <input hidden asp-for="@Model.Id"/>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input asp-for="@Model.Name" type="text" class="form-control" id="name" value="@Model.Name" >
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="desc">Description</label>
+        <input asp-for="@Model.Description" type="text" class="form-control" id="desc" value="@Model.Description">
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input asp-for="@Model.Price" type="text" class="form-control" id="price" value="@Model.Price.ToString("##")">
+      </div>
+        <div class="form-group">
+            <label for="discount">Discount % </label>
+            <input asp-for="@Model.Discount" type="number" class="form-control" id="discount" value="@Model.Discount">
+        </div>
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select asp-for="CategoryId" class="form-control" asp-items="@Model.Categories">
+            <option disabled selected>--Select Category--</option>
+        </select> 
+      </div>
+
+      <button type="submit" class="btn btn-primary">Edit</button>
+</form>
+</div>
